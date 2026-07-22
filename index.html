@@ -7,32 +7,25 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Russian Roulette</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
 
-  <!-- NOISE OVERLAY (Covers the whole screen) -->
+  <!-- NOISE OVERLAY -->
   <div id="noise-layer"></div>
 
-  <!-- FADE TO BLACK TRANSITION OVERLAY -->
+  <!-- FADE TO BLACK OVERLAY -->
   <div id="fade-overlay"></div>
 
   <!-- MAIN MENU SCENE -->
   <div id="menu-scene">
     <h1 id="game-title">russian<br>roulette</h1>
-    <div id="menu-content-box">
-      <img id="menu-bg" src="media/menu-rough.png" alt="Menu Background">
-      <button id="start-btn">load bullets</button>
+    
+    <!-- Centered Menu Sprite Wrapper -->
+    <div id="menu-container">
+      <img id="menu-bg" src="media/menu-rough.png" alt="Main Menu">
+      <button id="start-btn">load bullet</button>
     </div>
   </div>
 
-  <!-- GAMEPLAY SCENE CONTAINER (Scales cleanly on any screen ratio) -->
+  <!-- GAME SCENE CONTAINER -->
   <div id="game-scene" style="display: none;">
     <div id="scene-viewport">
       <img id="bot" src="media/bot-rough.png" alt="Bot Opponent">
@@ -43,32 +36,6 @@
   </div>
 
   <!-- UI TASKBAR -->
-  <div id="taskbar" style="display: none;">
-    <button id="spin-btn">Spin Cylinder</button>
-    <button id="trigger-self-btn">Pull Trigger (Self)</button>
-    <button id="shoot-opponent-btn">Shoot Opponent</button>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
-  <!-- MAIN MENU SCENE -->
-  <div id="menu-scene">
-    <img id="menu-bg" src="media/menu-rough.png" alt="Main Menu">
-    <button id="start-btn">PLAY GAME</button>
-  </div>
-
-  <!-- GAME SCENE CONTAINER (Hidden initially) -->
-  <div id="game-scene" class="game-scene" style="display: none;">
-    <img id="bot" src="media/bot-rough.png" alt="Bot Opponent">
-    <img id="table" src="media/table-up.png" alt="Table Surface">
-    <img id="hands" src="media/hands-up.png" alt="Player Hands">
-  </div>
-
-  <!-- GAMEPLAY OBJECTS (Hidden initially) -->
-  <img id="revolver" src="media/revolver-rough.png" alt="Revolver" style="display: none;">
-
-  <!-- UI CONTROLS (Hidden initially) -->
   <div id="taskbar" style="display: none;">
     <button id="spin-btn">Spin Cylinder</button>
     <button id="trigger-self-btn">Pull Trigger (Self)</button>
