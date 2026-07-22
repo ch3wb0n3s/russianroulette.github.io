@@ -1,115 +1,194 @@
-body, html {
+/* ==========================================
+   RUSSIAN ROULETTE GAME STYLESHEET
+   ========================================== */
+
+* {
   margin: 0;
   padding: 0;
-  height: 100%;
-  overflow: hidden;
-  background: #000;
-  font-family: sans-serif;
-  color: white;
+  box-sizing: border-box;
 }
 
-.game-screen {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  background: #111;
-}
-
-.table-img {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+body, html {
   width: 100vw;
-  z-index: 2; /* Table is now above bot */
+  height: 100vh;
+  overflow: hidden;
+  background-color: #000;
+  font-family: Arial, sans-serif;
+  user-select: none;
 }
 
-.bot-character {
-  position: absolute;
-  top: 5%;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 300px;
-  z-index: 1; /* Bot is now behind table */
+/* --- OVERLAYS --- */
+#noise-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('media/noise-layer.png');
+  opacity: 0.15;
+  pointer-events: none; /* Prevents overlay from blocking clicks */
+  z-index: 100;
 }
 
-.player-hands {
-  position: absolute;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 450px; /* Increased from 200px */
-  z-index: 3;
+#fade-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  opacity: 0;
+  pointer-events: none; /* Prevents overlay from blocking clicks */
+  transition: opacity 0.8s ease;
+  z-index: 90;
 }
 
-.revolver-img {
-  position: absolute;
-  bottom: 120px; /* Adjust if needed for new size */
-  left: 50%;
-  transform: translateX(-50%);
-  height: 250px; /* Increased from 80px */
-  z-index: 4;
+#fade-overlay.fade-in {
+  opacity: 1;
 }
 
-.hud-bar {
+/* --- MAIN MENU SCENE --- */
+#menu-scene {
   position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 80px;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
-  background: none; /* Remove background-image if you want only the bar */
+  background-color: #000;
+  z-index: 50;
 }
 
-.hud-bar-bg {
+#game-title {
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(30,30,30,0.95); /* or any color/texture you want */
-  border-top: 2px solid #444;
-  z-index: 1;
+  top: 40px;
+  left: 50px;
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  text-transform: lowercase;
+  line-height: 1.1;
+  font-weight: bold;
+  letter-spacing: 2px;
+  z-index: 10;
 }
 
-.hud-bar-buttons {
+#menu-container {
   position: relative;
+  width: min(80vw, 80vh, 550px);
+  height: min(80vw, 80vh, 550px);
   display: flex;
-  justify-content: space-around;
   align-items: center;
-  width: 100%;
-  z-index: 2;
+  justify-content: center;
 }
 
-.hud-bar button {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid white;
-  color: white;
-  padding: 8px 14px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.hud-bar button:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.action-video {
-  position: absolute;
+#menu-bg {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  z-index: 100;
-  pointer-events: none;
+  object-fit: contain;
 }
 
-.game-status {
+#start-btn {
   position: absolute;
-  top: 10px;
+  left: 12%; /* Locks button onto the center-left side of the menu sprite */
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 12px 24px;
+  font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+  text-transform: lowercase;
+  font-weight: bold;
+  background: #222;
+  color: #fff;
+  border: 2px solid #555;
+  cursor: pointer;
+  border-radius: 4px;
+  z-index: 10; /* Ensures button layers above the image sprite */
+  transition: all 0.2s ease;
+}
+
+#start-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* --- GAME SCENE VIEWPORT --- */
+#game-scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#scene-viewport {
+  position: relative;
+  width: 1000px;
+  height: 600px;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#bot, #table, #hands, #revolver {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  text-align: center;
-  font-size: 1.2rem;
+  height: 100%;
+  object-fit: contain;
+}
+
+#bot { z-index: 1; }
+#table { z-index: 2; }
+#hands { z-index: 3; }
+
+#revolver {
+  z-index: 4;
+  object-fit: contain;
+  width: 180px;
+  height: auto;
+  bottom: 85px;
+  top: auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* --- UI TASKBAR --- */
+#taskbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 80px;
+  background: #111;
+  border-top: 2px solid #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
   z-index: 10;
+}
+
+#taskbar button {
+  padding: 10px 20px;
+  font-size: clamp(0.8rem, 1.2vw, 1.1rem);
+  background: #222;
+  color: #ccc;
+  border: 1px solid #444;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+
+#taskbar button:hover {
+  background: #fff;
+  color: #000;
+}
+
+#taskbar button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
